@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'core/theme/app_theme.dart';
+import 'logic/auth/auth_bloc.dart';
+import 'logic/auth/auth_wrapper.dart';
 import 'logic/auth/theme/theme_bloc.dart';
-import 'features/auth/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,23 +17,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        // Providing the ThemeBrain to the whole app
         BlocProvider(create: (context) => ThemeBloc()),
+        BlocProvider(create: (context) => AuthBloc()), // Initialize Auth here
       ],
       child: BlocBuilder<ThemeBloc, ThemeMode>(
         builder: (context, currentMode) {
           return MaterialApp(
-            title: 'Caza Project',
             debugShowCheckedModeBanner: false,
-
-            // Adjusted to use the new getTheme method from Step 2
-            theme: AppTheme.getTheme(true), // Light Theme
-            darkTheme: AppTheme.getTheme(false), // Dark Theme
-
-            // This is controlled by your ThemeBloc toggle
+            theme: AppTheme.getTheme(false),
+            darkTheme: AppTheme.getTheme(true),
             themeMode: currentMode,
 
-            home: LoginScreen(),
+            // The AuthWrapper now handles the logic!
+            home: const AuthWrapper(),
           );
         },
       ),

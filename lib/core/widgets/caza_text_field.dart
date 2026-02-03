@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CazaTextField extends StatelessWidget {
+class CazaTextField extends StatefulWidget {
+
   final TextEditingController controller;
-  final String label;
+  final String hintText;
   final IconData? prefixIcon;
   final bool isPassword;
   final String? Function(String?)? validator;
@@ -10,25 +11,45 @@ class CazaTextField extends StatelessWidget {
   const CazaTextField({
     super.key,
     required this.controller,
-    required this.label,
+    required this.hintText,
     this.prefixIcon,
     this.isPassword = false,
     this.validator,
   });
 
   @override
+  State<CazaTextField> createState() => _CazaTextFieldState();
+}
+
+class _CazaTextFieldState extends State<CazaTextField> {
+  bool _obscureText = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.isPassword;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      obscureText: isPassword,
-      validator: validator,
+      controller: widget.controller,
+      obscureText: _obscureText,
+      validator: widget.validator,
+      // This uses the 'inputDecorationTheme' we defined in AppTheme!
       decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-        // The styling is mostly handled by the Global Theme we just wrote!
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        hintText: widget.hintText,
+        prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
+        suffixIcon: widget.isPassword
+            ? IconButton(
+                icon: Icon(
+                  _obscureText
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
+                onPressed: () => setState(() => _obscureText = !_obscureText),
+              )
+            : null,
       ),
     );
   }

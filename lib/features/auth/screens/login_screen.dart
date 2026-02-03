@@ -1,16 +1,20 @@
 import 'package:caza/core/widgets/caza_button.dart';
 import 'package:caza/core/widgets/caza_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../logic/auth/auth_bloc.dart';
+import '../../../logic/auth/auth_event.dart';
 
-class LoginScreen extends
-StatelessWidget {
+class LoginScreen extends StatelessWidget {
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: SafeArea(
@@ -25,12 +29,25 @@ StatelessWidget {
               Text("We're excited to see you again!", style: theme.textTheme.bodyMedium),
 
               const SizedBox(height: 48),
-              const Text("Account Information", style: TextStyle(fontWeight: FontWeight.bold)),
+              // Inside your Column in login_screen.dart
+              const Text(
+                  "Account Information",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+              ),
               const SizedBox(height: 16),
 
-               CazaTextField(controller: emailController, label: 'Input your email',),
-               const SizedBox(height: 16),
-               CazaTextField(controller: passwordController, label: 'Input your password'),
+              CazaTextField(
+                controller: emailController,
+                hintText: 'Input your email',
+              ),
+
+              const SizedBox(height: 16),
+
+              CazaTextField(
+                controller: passwordController,
+                hintText: 'Password',
+                isPassword: true, // This enables the dots and the eye icon
+              ),
 
               TextButton(
                 onPressed: () {},
@@ -39,7 +56,18 @@ StatelessWidget {
               ),
 
               SizedBox(height: 30),
-              CazaButton(text: 'Login', onPressed: (){})
+              CazaButton(
+                text: "Sign In",
+                onPressed: () {
+                  print("Login button pressed!"); // Add this to check your console
+                  context.read<AuthBloc>().add(
+                    LoginRequested(
+                      emailController.text,
+                      passwordController.text,
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),

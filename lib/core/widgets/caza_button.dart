@@ -18,7 +18,9 @@ class CazaButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: isSecondary ? AppColors.accentRed : AppColors.primaryBlue,
+        backgroundColor: isSecondary
+            ? AppColors.accentRed
+            : AppColors.primaryBlue,
       ),
       child: Text(text),
     );
