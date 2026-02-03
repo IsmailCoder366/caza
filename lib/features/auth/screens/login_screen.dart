@@ -1,3 +1,5 @@
+import 'package:caza/core/widgets/caza_button.dart';
+import 'package:caza/core/widgets/caza_text_field.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
@@ -6,7 +8,9 @@ class LoginScreen extends
 StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context); // Get current theme info
+    final theme = Theme.of(context);
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: SafeArea(
@@ -24,27 +28,18 @@ StatelessWidget {
               const Text("Account Information", style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
 
-              const TextField(decoration: InputDecoration(hintText: "Input your email")),
-              const SizedBox(height: 16),
-              const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: "Password",
-                  suffixIcon: Icon(Icons.visibility_outlined),
-                ),
-              ),
+               CazaTextField(controller: emailController, label: 'Input your email',),
+               const SizedBox(height: 16),
+               CazaTextField(controller: passwordController, label: 'Input your password'),
 
               TextButton(
                 onPressed: () {},
                 child: Text("Forgot your password?",
-                    style: TextStyle(color: theme.brightness == Brightness.dark ? Colors.white : AppColors.primaryBlue)),
+                    style: TextStyle(color: theme.brightness == Brightness.dark ? Colors.white : AppColors.primaryAccent)),
               ),
 
               SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text("Log In"),
-              ),
+              CazaButton(text: 'Login', onPressed: (){})
             ],
           ),
         ),

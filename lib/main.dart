@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
 
             // Adjusted to use the new getTheme method from Step 2
-            theme: AppTheme.getTheme(false), // Light Theme
-            darkTheme: AppTheme.getTheme(true), // Dark Theme
+            theme: AppTheme.getTheme(true), // Light Theme
+            darkTheme: AppTheme.getTheme(false), // Dark Theme
 
             // This is controlled by your ThemeBloc toggle
             themeMode: currentMode,

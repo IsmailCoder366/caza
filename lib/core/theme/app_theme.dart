@@ -21,7 +21,7 @@ class AppTheme {
         ),
       ),
 
-      // Input Field Styling from your
+      // Input Field Styling
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: isDark ? AppColors.darkInputFill : AppColors.lightInputFill,
