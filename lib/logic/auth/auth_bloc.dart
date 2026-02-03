@@ -10,26 +10,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
 
       try {
-        // SIMULATION: In a real app, you'd call your Firebase/API here.
+        // 1. Simulate Network Latency
         await Future.delayed(const Duration(seconds: 2));
 
-        if (event.email == "creator@caza.com") {
-          final mockCreator = UserModel(
-            uid: "1",
-            email: event.email,
-            displayName: "Nicholas Hyde",
-            role: "creator", // KEY ROLE
-          );
-          emit(Authenticated(mockCreator));
-        } else {
-          final mockUser = UserModel(
-            uid: "2",
-            email: event.email,
-            displayName: "Standard User",
-            role: "user", // KEY ROLE
-          );
-          emit(Authenticated(mockUser));
+        // 2. Logic: Safe Name Extraction
+        // We check if the email contains '@' and is not empty.
+        String extractedName = "User"; // Default fallback
+
+        if (event.email.isNotEmpty && event.email.contains('@')) {
+          extractedName = event.email.split('@')[0];
         }
+
+        // Final guard: If splitting resulted in an empty string (e.g. "@domain.com")
+        if (extractedName.isEmpty) {
+          extractedName = "User";
+        }
+
+        final authenticatedUser = UserModel(
+          uid: "user_123",
+          email: event.email,
+          displayName: extractedName,
+        );
+
+        emit(Authenticated(authenticatedUser));
+
       } catch (e) {
         emit(AuthError("Login Failed. Please check your credentials."));
       }
